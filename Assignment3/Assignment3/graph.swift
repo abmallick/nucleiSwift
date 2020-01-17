@@ -25,117 +25,117 @@ class Graph {
         return root
     }
     
-    func getParents(nodeId : Int) -> [Node]? {
+    func getParents(nodeId : Int) throws -> [Node]? {
         if let temp = rootId[nodeId] {
+            print("Parents: \n")
             return temp.getParentsValues()
         }
         else{
-            print("Node does not exist!")
-            return nil
+            throw CustomErrors.noNode
         }
     }
     
-    func getChildren(nodeId : Int) -> [Node]? {
+    func getChildren(nodeId : Int) throws -> [Node]? {
         if let temp = rootId[nodeId] {
+            print("Children: \n")
             return temp.getChildrenValues()
         }
         else{
-            print("Node does not exist!")
-            return nil
+            throw CustomErrors.noNode
         }
     }
     
-    func getAncestors(nodeId : Int) -> [Node]? {
+    func getAncestors(nodeId : Int) throws -> [Node]? {
         if let temp = rootId[nodeId] {
+            print("Ancestors: \n")
             return temp.getAncestors()
         }
         else{
-            print("Node does not exist!")
-            return nil
+            throw CustomErrors.noNode
         }
     }
     
-    func getDescendants(nodeId : Int) -> [Node]? {
+    func getDescendants(nodeId : Int) throws -> [Node]? {
         if let temp = rootId[nodeId] {
+            print("Descendants: \n")
             return temp.getDescendants()
         }
         else{
-            print("Node does not exist!")
-            return nil
+            throw CustomErrors.noNode
         }
     }
     
-    func addDependency(parentId : Int , childId : Int) {
+    func addDependency(parentId : Int , childId : Int) throws {
         var parent : Node?
         var child : Node?
         if let temp = rootId[parentId] {
             parent = temp
         }
         else {
-            print("Given parent id does not exist")
-            return
+            throw CustomErrors.noParent
         }
         
         if let temp = rootId[childId] {
             child = temp
         }
         else {
-            print("Given child id does not exist")
-            return
+            throw CustomErrors.noChild
         }
         
         if let temp = child?.getDescendants() {
             if temp.contains(parent!) {
-                print("Cyclic dependency cannot insert")
-                return
+                throw CustomErrors.cyclicDependency
             }
         }
         
         if let temp = parent?.getAncestors() {
             if temp.contains(child!) {
-                print("Cyclic dependency cannot insert")
-                return
+                throw CustomErrors.cyclicDependency
             }
         }
         
         parent?.addChild(child : child!)
         child?.addParent(parent: parent!)
+        print("Dependency added")
     }
     
-    func removeDependency(parentId : Int, childId : Int) {
+    func removeDependency(parentId : Int, childId : Int) throws {
         var parent : Node?
         var child : Node?
         if let temp = rootId[parentId] {
             parent = temp
         }
         else {
-            print("Given parent id does not exist")
-            return
+            throw CustomErrors.noParent
         }
         
         if let temp = rootId[childId] {
             child = temp
         }
         else {
-            print("Given child id does not exist")
-            return
+            throw CustomErrors.noChild
         }
         
         parent?.removeChild(childId: childId)
         child?.removeParent(parentId: parentId)
+        print("Dependency removed")
     }
     
     func addNode(nodeId : Int, name : String) {
         rootId.updateValue(Node(id: nodeId, name : name), forKey: nodeId)
+        print("Node added")
     }
     
-    func deleteNode(nodeId : Int) {
+    func deleteNode(nodeId : Int) throws {
         var children = [Node]()
         var parents = [Node]()
         
         if let temp = rootId[nodeId] {
             children = temp.getChildrenValues()
             parents = temp.getParentsValues()
+        }
+        else {
+            throw CustomErrors.noNode
         }
         
         for p in parents {
@@ -146,5 +146,6 @@ class Graph {
             c.removeParent(parentId: nodeId)
         }
         rootId.removeValue(forKey: nodeId)
+        print("Node deleted!")
     }
 }
