@@ -9,11 +9,11 @@
 import Foundation
 //add, display, delete, save, exit
 //name, age, address, rollNo, course
-var choice : Int = -1
-var name : String = ""
-var age : Int = -1
-var address : String = ""
-var rollNo : String = ""
+var choice : Int?
+var name : String?
+var age : Int?
+var address : String?
+var rollNo : String?
 var course = [String]()
 
 var users = [Student]()
@@ -21,8 +21,8 @@ var users = [Student]()
 while(true) {
     print("1. Add User\t 2. Display User Details\t 3. Delete User Details\t 4. Save User Details, 5. Exit")
     
-    if let temp = Int(readLine()!){
-        choice = temp
+    if let temp = readLine(){
+        choice = Int(temp)
     }
     
     switch choice {
@@ -33,8 +33,8 @@ while(true) {
         }
         
         print("Enter age")
-        if let temp = Int(readLine()!){
-            age = temp
+        if let temp = readLine(){
+            age = Int(temp)
         }
         
         print("Enter address")
@@ -61,17 +61,26 @@ while(true) {
             }
         }
         
-        users.append(Student(name: name, age: age, address: address, rollNo: rollNo, course: course))
-        users.sort(by: {(s1 : Student , s2 : Student) in
-            if s1.getName() == s2.getName() {
-                return s1.getRollNo() > s2.getRollNo()
-            }
-            else {
-                return s1.getName() > s2.getName()}
-            })
+        if name == nil || age == nil || address == nil || rollNo == nil {
+            print("Invalid input, try again!")
+        }
+        else {
+            users.append(Student(name: name!, age: age!, address: address!, rollNo: rollNo!, course: course))
             
+            users.sort(by: {(s1 : Student , s2 : Student) in
+                if s1.getName() == s2.getName() {
+                    return s1.getRollNo() > s2.getRollNo()
+                }
+                else {
+                    return s1.getName() > s2.getName()}
+                })
+        }
         break
     case 2:
+        if users.count == 0 {
+            print("No records exist!")
+            break
+        }
         print("Users ")
         
         for user in users {
@@ -121,18 +130,16 @@ while(true) {
         if let temp = readLine(){
             rollNo = temp
         }
+        let temp = users
         
-     /*   var stud : Student
-        var found : Bool = false
-        for student in users {
-            if rollNo == student.getRollNo() {
-                stud = student
-                found = true
-            }
-        }
-    */
         users = users.filter({ $0.getRollNo() != rollNo})
-         
+        
+        if temp == users {
+            print("No such rollNo exists!")
+        }
+        else {
+            print("Removed successfully")
+        }
         break
         
     case 4:

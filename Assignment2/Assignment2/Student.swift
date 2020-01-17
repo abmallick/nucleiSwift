@@ -8,7 +8,11 @@
 
 import Foundation
 
-class Student : CustomStringConvertible {
+class Student : CustomStringConvertible, Equatable {
+    static func == (lhs: Student, rhs: Student) -> Bool {
+        return lhs.getRollNo() == rhs.getRollNo() && lhs.getName() == rhs.getName()
+    }
+    
     //name, age, address, rollNo, course
     var name : String
     var age : Int
