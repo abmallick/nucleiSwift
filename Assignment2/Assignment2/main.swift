@@ -27,24 +27,32 @@ while(true) {
     
     switch choice {
     case 1:
-        print("Enter name")
-        if let temp = readLine() {
-            name = temp
+        while name == nil {
+            print("Enter name")
+            if let temp = readLine() {
+                name = temp
+            }
         }
         
-        print("Enter age")
-        if let temp = readLine(){
-            age = Int(temp)
+        while age == nil {
+            print("Enter age")
+            if let temp = readLine(){
+                age = Int(temp)
+            }
         }
         
-        print("Enter address")
-        if let temp = readLine() {
-            address = temp
+        while address == nil {
+            print("Enter address")
+            if let temp = readLine() {
+                address = temp
+            }
         }
         
-        print("Enter rollNo")
-        if let temp = readLine() {
-            rollNo = temp
+        while rollNo == nil {
+            print("Enter rollNo")
+            if let temp = readLine() {
+                rollNo = temp
+            }
         }
         
         print("Enter Courses, 4 out of 6: A, B, C, D, E, F");
@@ -55,26 +63,22 @@ while(true) {
             }
             while("A" != (course[i]) && "B" != (course[i]) && "C" != (course[i]) && "D" != (course[i]) && "E" != (course[i]) && "F" != (course[i])) {
                 print("Enter valid course!");
+                course.remove(at: i)
                 if let temp = readLine() {
                     course.insert(temp, at: i)
                 }
             }
         }
         
-        if name == nil || age == nil || address == nil || rollNo == nil {
-            print("Invalid input, try again!")
-        }
-        else {
-            users.append(Student(name: name!, age: age!, address: address!, rollNo: rollNo!, course: course))
-            
-            users.sort(by: {(s1 : Student , s2 : Student) in
-                if s1.getName() == s2.getName() {
-                    return s1.getRollNo() > s2.getRollNo()
-                }
-                else {
-                    return s1.getName() > s2.getName()}
-                })
-        }
+        users.append(Student(name: name!, age: age!, address: address!, rollNo: rollNo!, course: course))
+        
+        users.sort(by: {(s1 : Student , s2 : Student) in
+            if s1.getName() == s2.getName() {
+                return s1.getRollNo() > s2.getRollNo()
+            }
+            else {
+                return s1.getName() > s2.getName()}
+            })
         break
     case 2:
         if users.count == 0 {
@@ -125,6 +129,10 @@ while(true) {
         break
         
     case 3:
+        if users.count == 0 {
+            print("No records exist!")
+            break
+        }
         print("Enter rollNo to delete user")
         
         if let temp = readLine(){

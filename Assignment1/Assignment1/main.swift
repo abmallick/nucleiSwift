@@ -17,22 +17,32 @@ var type : String?
 var list = [Item]()
 
 while(sent == "y" || sent == "Y") {
-    print("Enter Item name, price, quantity, type")
-    
-    if let tname = readLine() {
-        name = tname
+    while name == nil {
+        print("Enter name")
+        if let tname = readLine() {
+            name = tname
+        }
     }
     
-    if let tprice = readLine() {
-        price = Double(tprice)
+    while price == nil {
+        print("Enter price")
+        if let tprice = readLine() {
+            price = Double(tprice)
+        }
     }
     
-    if let tquantity = readLine() {
-        quantity = Int(tquantity)
+    while quantity == nil {
+        print("Enter quantity")
+        if let tquantity = readLine() {
+            quantity = Int(tquantity)
+        }
     }
-
-    if let ttype = readLine() {
-        type = ttype
+    
+    while type == nil {
+        print("Enter type")
+        if let ttype = readLine() {
+            type = ttype
+        }
     }
     
     while(!(type == "raw") && !(type == "manufactured") && !(type == "imported")) {
@@ -42,12 +52,8 @@ while(sent == "y" || sent == "Y") {
         }
     }
     
-    if name == nil || price == nil  || quantity == nil || type == nil {
-        print("Invalid input, try again!")
-    }
-    else{
-        list.append(Item(name: name!, price: price!, quantity: quantity!, type: type!))
-    }
+    list.append(Item(name: name!, price: price!, quantity: quantity!, type: type!))
+    
     print("Want to enter more items? y/Y")
     if let tsent = readLine(){
         sent = tsent
